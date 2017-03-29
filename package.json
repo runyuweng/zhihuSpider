@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/wengwengweng/zhihuSpider/issues"
   },
-  "homepage": "https://github.com/wengwengweng/zhihuSpider#readme"
+  "homepage": "https://github.com/wengwengweng/zhihuSpider#readme",
+  "dependencies": {
+    "http": "^0.0.0",
+    "mysql": "^2.13.0"
+  }
 }

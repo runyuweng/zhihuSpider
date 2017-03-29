@@ -1,3 +1,3 @@
-var user = require('./db/user');
+var User = require('./db/user');
 
-user.save();
+User.saveUrl();
