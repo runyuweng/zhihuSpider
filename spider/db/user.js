@@ -2,11 +2,11 @@ const connection = require('./db');
 
 const User = {
 
-  saveUrl:function(){
+  saveUrl:()=> {
     console.log('this is save url');
   },
-  
-  saveDetail: function(){
+
+  saveDetail:()=> {
     console.log('this is save detail');
   }
 

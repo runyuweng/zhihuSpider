@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node --harmony-async-await ./spider/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/wengwengweng/zhihuSpider#readme",
   "dependencies": {
-    "http": "^0.0.0",
-    "mysql": "^2.13.0"
+    "cheerio": "^0.22.0",
+    "mysql": "^2.13.0",
+    "request": "^2.81.0"
   }
 }
