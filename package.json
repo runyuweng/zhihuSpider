@@ -20,6 +20,6 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "mysql": "^2.13.0",
-    "request": "^2.81.0"
+    "phantom": "^4.0.1"
   }
 }
