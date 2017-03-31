@@ -5,8 +5,8 @@ function extract(){
 
     var urlList = [],
         users = [],
-        allPage = '',
-        currentPage = '';
+        allPage = 0,
+        currentPage = 0;
 
     // 获取用户详情
     var getDetail = async (url)=>{
@@ -40,37 +40,57 @@ function extract(){
         console.log(user);
     };
 
+
+
+
     // 获取用户Url
     var getUrlList = async (url)=>{
-        const instance = await phantom.create();
-        const page = await instance.createPage();
-        //等待页面加载完成
-        await page.on("onLoadFinished", function(status) {
-            console.log('Status: ' + status);
-        });
-        const status = await page.open(url);
-        //获取到页面
-        const content = await page.property('content');
-        // 使用cheerio解析页面
-        const $ = cheerio.load(content);
-        for(let i = 0; i < $('.UserItem-name .UserLink-link').length ; i++){
-            let url  = $('.UserItem-name .UserLink-link').eq(i).attr('href'),
-                user_name = $('.UserItem-name .UserLink-link').eq(i).text();
-            let user = {user_name:user_name, url:url};
-            console.log(user);
-            users.push(user);
-            urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
-        }
-        allPage = $('.Pagination button').eq(-2).text();//获取总页数
-        currentpage = url.split("?page=")[1]; //获取当前页数
+        try {
+            const instance = await phantom.create();
+            const page = await instance.createPage();
+            //等待页面加载完成
+            await page.on("onLoadFinished", function(status) {
+                console.log('Status: ' + status);
+            });
+            const status = await page.open(url);
+            //获取到页面
+            const content = await page.property('content');
+            // 使用cheerio解析页面
+            const $ = cheerio.load(content);
+            for(let i = 0; i < $('.UserItem-name .UserLink-link').length ; i++){
+                let url  = $('.UserItem-name .UserLink-link').eq(i).attr('href'),
+                    user_name = $('.UserItem-name .UserLink-link').eq(i).text();
+                let user = {user_name:user_name, url:url};
+                console.log(user);
+                users.push(user);
+                urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
+            }
+            console.log($('#Profile-following .Pagination').length);
+            //如果分页器存在
+            if($('#Profile-following .Pagination')){
+                allPage = $('.Pagination button').eq(-2).text();//获取总页数
+                currentPage = url.split("?page=")[1]; //获取当前页数
+                console.log('allPage',allPage,'currentPage',currentPage);
+            }
 
-        if(currentpage < allPage){//以防总页数太多
-            url = url.split('?page=')[0]+'?page='+(parseInt(currentpage)+1);
-            getUrlList(url);
-        }else{
-            getUrlList(urlList.shift()+'?page=1');
+            if(currentPage < allPage){//还有页数没有读取
+                url = url.split('?page=')[0]+'?page='+(parseInt(currentPage)+1);
+                getUrlList(url);
+            }else{
+                allPage = 0;
+                currentPage = 0;
+                getUrlList(urlList.shift()+'?page=1');
+            }
+        } catch (e) {
+
+        } finally {
+
         }
+
     };
+
+
+
 
     return {
         getUrlList:getUrlList,
