@@ -68,8 +68,10 @@ function extract(){
             console.log($('#Profile-following .Pagination').length);
             //如果分页器存在
             if($('#Profile-following .Pagination')){
-                allPage = $('.Pagination button').eq(-2).text();//获取总页数
                 currentPage = url.split("?page=")[1]; //获取当前页数
+                if(currentPage === '1'){
+                    allPage = $('#Profile-following .Pagination button').eq(-2).text();//获取总页数
+                }
                 console.log('allPage',allPage,'currentPage',currentPage);
             }
 
