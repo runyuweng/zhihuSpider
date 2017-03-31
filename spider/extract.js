@@ -75,7 +75,9 @@ function extract(){
                 console.log('allPage',allPage,'currentPage',currentPage);
             }
 
-            if(currentPage < allPage){//还有页数没有读取
+            if(parseInt(currentPage) < parseInt(allPage)){//还有页数没有读取
+                console.log('url',url);
+                console.log('urls',url.split('?page=')[0]);
                 url = url.split('?page=')[0]+'?page='+(parseInt(currentPage)+1);
                 getUrlList(url);
             }else{
