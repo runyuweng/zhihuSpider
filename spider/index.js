@@ -5,3 +5,4 @@ const User = require('./db/user'),
 
 // extract.getDetail(url);
 extract.getUrlList(url);
+// User.saveUrl();

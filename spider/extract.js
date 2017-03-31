@@ -1,10 +1,10 @@
-const phantom = require('phantom'),
+const User = require('./db/user'),
+      phantom = require('phantom'),
       cheerio = require('cheerio');
 
 function extract(){
 
     var urlList = [],
-        users = [],
         allPage = 0,
         currentPage = 0;
 
@@ -46,6 +46,7 @@ function extract(){
     // 获取用户Url
     var getUrlList = async (url)=>{
         try {
+            console.log('load',url.split('/')[4]);
             const instance = await phantom.create();
             const page = await instance.createPage();
             //等待页面加载完成
@@ -57,23 +58,26 @@ function extract(){
             const content = await page.property('content');
             // 使用cheerio解析页面
             const $ = cheerio.load(content);
+            //获取用户名和url
             for(let i = 0; i < $('.UserItem-name .UserLink-link').length ; i++){
                 let url  = $('.UserItem-name .UserLink-link').eq(i).attr('href'),
                     user_name = $('.UserItem-name .UserLink-link').eq(i).text();
-                let user = {user_name:user_name, url:url};
-                console.log(user);
-                users.push(user);
+                let user = {user_id:url.split('/')[2], user_name:user_name, user_url:url};
+                User.saveUrl(user);
+                console.log({user_name:user_name, user_url:url});
                 urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
             }
-            console.log($('#Profile-following .Pagination').length);
             //如果分页器存在
-            if($('#Profile-following .Pagination')){
+            if($('#Profile-following .Pagination').length>0){
                 currentPage = url.split("?page=")[1]; //获取当前页数
                 if(currentPage === '1'){
                     allPage = $('#Profile-following .Pagination button').eq(-2).text();//获取总页数
                 }
-                console.log('allPage',allPage,'currentPage',currentPage);
             }
+            console.log('allPage',allPage,'currentPage',currentPage);
+            console.log('\n\n');
+
+            await instance.exit();
 
             if(parseInt(currentPage) < parseInt(allPage)){//还有页数没有读取
                 console.log('url',url);
