@@ -63,7 +63,7 @@ function extract(){
                 let url  = $('.UserItem-name .UserLink-link').eq(i).attr('href'),
                     user_name = $('.UserItem-name .UserLink-link').eq(i).text();
                 let user = {user_id:url.split('/')[2], user_name:user_name, user_url:'https://www.zhihu.com'+url+'/followers?page=1'};
-                User.saveUrl(user);
+                // User.saveUrl(user);
                 console.log({user_name:user_name, user_url:url});
                 urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
             }
@@ -75,7 +75,11 @@ function extract(){
                 }
             }
             console.log('allPage',allPage,'currentPage',currentPage);
+            console.log('urlList-length',urlList.length);
             console.log('\n\n');
+            if(urlList.length>=500){
+                urlList.splice(500,urlList.length-500)
+            }
 
             await instance.exit();
 
