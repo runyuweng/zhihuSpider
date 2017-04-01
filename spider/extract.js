@@ -46,7 +46,7 @@ function extract(){
     // 获取用户Url
     var getUrlList = async (url)=>{
         try {
-            console.log('load',url.split('/')[4]);
+            console.log('load',url.split('/')[4],url);
             const instance = await phantom.create();
             const page = await instance.createPage();
             //等待页面加载完成
@@ -63,7 +63,7 @@ function extract(){
                 let url  = $('.UserItem-name .UserLink-link').eq(i).attr('href'),
                     user_name = $('.UserItem-name .UserLink-link').eq(i).text();
                 let user = {user_id:url.split('/')[2], user_name:user_name, user_url:'https://www.zhihu.com'+url+'/followers?page=1'};
-                // User.saveUrl(user);
+                User.saveUrl(user);
                 console.log({user_name:user_name, user_url:url});
                 urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
             }
@@ -85,8 +85,8 @@ function extract(){
 
             if(parseInt(currentPage) < parseInt(allPage)){//还有页数没有读取
                 console.log('url',url);
-                console.log('urls',url.split('?page=')[0]);
                 url = url.split('?page=')[0]+'?page='+(parseInt(currentPage)+1);
+                console.log('extract-url:',url);
                 getUrlList(url);
             }else{
                 allPage = 0;
