@@ -1,9 +1,11 @@
 const User = require('./db/user'),
       extract = require('./extract')(),
-      url = ['https://www.zhihu.com/people/libin001/followers?page=1',
-            'https://www.zhihu.com/people/yijun-li-3/followers?page=1',
-            'https://www.zhihu.com/people/vczero/followerss?page=1',
-            'https://www.zhihu.com/people/xfwang/followers?page=1'];
+      url = ['https://www.zhihu.com/people/zhuan-shen-fan-sha/followers?page=1',
+            'https://www.zhihu.com/people/warfalcon/followers?page=1',
+            'https://www.zhihu.com/people/zhi-shi-jiu-shi-li-liang-13/followers?page=1',
+            'https://www.zhihu.com/people/gmf8541/followers?page=1'];
 process.on('message',function(m){
-  extract.getUrlList(url[m.num],m.num);
+    setTimeout(()=>{
+        extract.getUrlList(url[m.num],m.num);
+    },Number(m.num)*1000)
 })
