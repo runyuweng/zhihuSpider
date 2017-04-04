@@ -44,9 +44,9 @@ function extract(){
 
 
     // 获取用户Url
-    var getUrlList = async (url)=>{
+    var getUrlList = async (url, num)=>{
         try {
-            console.log('load',url.split('/')[4],url);
+            console.log('load',url,'num',num);
             const instance = await phantom.create();
             const page = await instance.createPage();
             //等待页面加载完成
@@ -59,12 +59,13 @@ function extract(){
             // 使用cheerio解析页面
             const $ = cheerio.load(content);
             //获取用户名和url
+            console.log('item-length',$('.UserItem-name .UserLink-link').length);
             for(let i = 0; i < $('.UserItem-name .UserLink-link').length ; i++){
                 let url  = $('.UserItem-name .UserLink-link').eq(i).attr('href'),
                     user_name = $('.UserItem-name .UserLink-link').eq(i).text();
                 let user = {user_id:url.split('/')[2], user_name:user_name, user_url:'https://www.zhihu.com'+url+'/followers?page=1'};
-                User.saveUrl(user);
-                console.log({user_name:user_name, user_url:url});
+                // User.saveUrl(user);
+                // console.log({user_name:user_name, user_url:url});
                 urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
             }
             //如果分页器存在
@@ -87,14 +88,14 @@ function extract(){
                 console.log('url',url);
                 url = url.split('?page=')[0]+'?page='+(parseInt(currentPage)+1);
                 console.log('extract-url:',url);
-                getUrlList(url);
+                getUrlList(url, num);
             }else{
                 allPage = 0;
                 currentPage = 0;
-                getUrlList(urlList.shift()+'?page=1');
+                getUrlList(urlList.shift()+'?page=1', num);
             }
         } catch (e) {
-
+            console.log(e);
         } finally {
 
         }

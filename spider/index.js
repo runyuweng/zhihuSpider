@@ -5,9 +5,5 @@ const User = require('./db/user'),
             'https://www.zhihu.com/people/vczero/followerss?page=1',
             'https://www.zhihu.com/people/xfwang/followers?page=1'];
 process.on('message',function(m){
-  console.log('get the message:',m);
-  console.log('index-url',url[m.num]);
-  extract.getUrlList(url[m.num]);
+  extract.getUrlList(url[m.num],m.num);
 })
-// extract.getDetail(url);
-// User.saveUrl();

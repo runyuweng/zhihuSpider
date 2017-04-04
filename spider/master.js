@@ -1,5 +1,6 @@
 var fork = require('child_process').fork;
 var cpus = require('os').cpus();
-for(var i = 0; i < 2; i++){
+console.log('cpus',cpus.length);
+for(var i = 0; i < cpus.length; i++){
     fork('./spider/index.js').send({'num':i});
 }
