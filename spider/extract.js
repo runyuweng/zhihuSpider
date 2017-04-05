@@ -30,14 +30,16 @@ function extract(){
         const $ = cheerio.load(content);
         // $('.Button.ProfileHeader-expandButton.Button--plain').click();
         let user = {
-            'name' : $('.ProfileHeader-name').text(),
-            'intro' : $('.RichText.ProfileHeader-headline').text(),
-            'type' : $('.ProfileHeader-infoItem').eq(0).text(),
-            'edu' : $('.ProfileHeader-infoItem').eq(1).text(),
-            'company' : $('.ProfileHeader-field').eq(0).text(),
-            'profile' : $('.RichText.ProfileHeader-detailValue').eq(0).text()
+            'user_id': url.split('/')[4],
+            'user_intro' : $('.RichText.ProfileHeader-headline').text()||'无',
+            'user_type' : $('.ProfileHeader-infoItem').eq(0).text()||'无',
+            'user_edu' : $('.ProfileHeader-infoItem').eq(1).text()||'无',
+            'user_company' : $('.ProfileHeader-field').eq(0).text()||'无',
+            'user_profile' : $('.RichText.ProfileHeader-detailValue').eq(0).text()||'无',
+            'user_detail' : 1
         };
-        console.log(user);
+        User.saveDetail(user);
+        console.log('\n\n');
     };
 
 
@@ -67,7 +69,7 @@ function extract(){
                     user_name = $('.UserItem-name .UserLink-link').eq(i).text();
                 let user = {user_id:url.split('/')[2], user_name:user_name, user_url:'https://www.zhihu.com'+url+'/followers?page=1'};
                 // User.saveUrl(user);
-                console.log(user);
+                console.log(user,num);
                 urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
             }
             //如果分页器存在
@@ -99,17 +101,10 @@ function extract(){
 
     };
 
-
-
-
     return {
         getUrlList:getUrlList,
         getDetail:getDetail
     }
 };
-
-
-
-module.exports = extract;
 
 module.exports = extract;
