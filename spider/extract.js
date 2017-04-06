@@ -39,7 +39,6 @@ function extract(){
             'user_detail' : 1
         };
         User.saveDetail(user);
-        console.log('\n\n');
     };
 
 
@@ -48,28 +47,31 @@ function extract(){
     // 获取用户Url
     var getUrlList = async (url, num)=>{
         try {
-            console.log('load',url,'num',num);
             const instance = await phantom.create();
             const page = await instance.createPage();
-            const status = await page.open(url);
             //等待页面加载完成
             await page.on("onLoadFinished", function(status) {
-                console.log('Status: ' + status);
+                // console.log('Status: ' + status);
             });
+            const status = await page.open(url);
+
             //获取到页面
             const content = await page.property('content');
             // 使用cheerio解析页面
             const $ = cheerio.load(content);
             //获取用户名和url
-            console.log('item-length',$('.UserItem-name .UserLink-link').length);
-            console.log('\n\n');
+            console.log(
+                'load',url.split('/')[4],
+                'item-length',$('.UserItem-name .UserLink-link').length,
+                'num',num,
+                'status',status,
+                '\n\n');
 
             for(let i = 0; i < $('.UserItem-name .UserLink-link').length ; i++){
                 let url  = $('.UserItem-name .UserLink-link').eq(i).attr('href'),
                     user_name = $('.UserItem-name .UserLink-link').eq(i).text();
                 let user = {user_id:url.split('/')[2], user_name:user_name, user_url:'https://www.zhihu.com'+url+'/followers?page=1'};
                 // User.saveUrl(user);
-                console.log(user,num);
                 urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
             }
             //如果分页器存在

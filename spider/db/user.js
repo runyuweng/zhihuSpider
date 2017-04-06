@@ -21,9 +21,11 @@ const User = {
 
     saveDetail:(data)=> {
         console.log('data:',data);
-        connection.query('UPDATE user SET user_intro = :user_intro, user_type = :user_type, user_edu = :user_type, user_company = :user_company, user_profile = :user_profile, user_detail = :user_detail WHERE user_id = :user_id;', data, function (error, results, fields) {
+        const query = 'UPDATE user SET user_intro = "'+data.user_intro+'", user_type = "'+data.user_type+'", user_edu = "'+data.user_type+'", user_company = "'+data.user_company+'", user_profile = "'+data.user_profile+'", user_detail = "'+data.user_detail+'" WHERE user_id = "'+data.user_id+'";';
+        console.log(query);
+        console.log('\n\n');
+        connection.query(query, function (error, results, fields) {
             if (error) throw error;
-            console.log(results);
         });
     }
 
