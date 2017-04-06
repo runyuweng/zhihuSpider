@@ -71,7 +71,7 @@ function extract(){
                 let url  = $('.UserItem-name .UserLink-link').eq(i).attr('href'),
                     user_name = $('.UserItem-name .UserLink-link').eq(i).text();
                 let user = {user_id:url.split('/')[2], user_name:user_name, user_url:'https://www.zhihu.com'+url+'/followers?page=1'};
-                // User.saveUrl(user);
+                User.saveUrl(user);
                 urlList.push('https://www.zhihu.com'+url+'/followers?page=1');
             }
             //如果分页器存在
